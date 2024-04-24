@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ordenando Valores</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label, select {
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            margin: 5px 0;
+            padding: 8px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        ul li:hover {
+            background-color: #e9e9e9;
+        }
+    </style>
+    <script src="ordenando.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Ordenando Valores</h1>
+        
+        <div>
+            <label for="valor">Valor:</label>
+            <input type="number" id="valor">
+            <button onclick="add()">Adicionar</button>
+        </div>
+
+        <div>
+            <label for="algoritmo">Algoritmo:</label>
+            <select id="algoritmo">
+                <option value="bubble">Bubble Sort</option>
+                <option value="selection">Selection Sort</option>
+                <option value="quick">Quick Sort</option>
+            </select>
+        </div>
+
+        <div>
+            <button onclick="ordenar()">Ordenar</button>
+            <button onclick="misturar()">Misturar</button>
+        </div>
+
+        <ul id="valores">
+            <!-- Lista vazia -->
+        </ul>
+    </div>
+
+    <script>
+        // Função add
+        function add() {
+            const input = document.getElementById('valor');
+            const valores = document.getElementById('valores');
+
+            const node = document.createElement('li');
+            const textNode = document.createTextNode(input.value);
+            node.appendChild(textNode);
+
+            valores.appendChild(node);
+
+            input.value = ''; // Limpa o campo de entrada após adicionar
+        }
+
+        // Função ordenar
+        function ordenar() {
+            const valores = document.getElementById('valores');
+            const algoritmo = document.getElementById('algoritmo').value;
+
+            const array = Array.from(valores.children).map(item => parseInt(item.innerHTML));
+            
+            let sortedArray;
+            switch (algoritmo) {
+                case 'bubble':
+                    sortedArray = bubble_sort(array);
+                    break;
+                case 'selection':
+                    sortedArray = selection_sort(array);
+                    break;
+                case 'quick':
+                    sortedArray = quick_sort(array, 0, array.length - 1);
+                    break;
+            }
+
+            valores.innerHTML = sortedArray.map(item => `<li>${item}</li>`).join('');
+        }
+
+        // Função misturar
+        function misturar() {
+            const valores = document.getElementById('valores');
+
+            const array = Array.from(valores.children).map(item => parseInt(item.innerHTML));
+            
+            const shuffledArray = shuffle(array);
+
+            valores.innerHTML = shuffledArray.map(item => `<li>${item}</li>`).join('');
+        }
+    </script>
+</body>
+
+</html>
